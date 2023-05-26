@@ -1,6 +1,6 @@
 
 import { useForm } from "react-hook-form";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import useTitle from "../../../hooks/useTitle";
 
@@ -9,6 +9,9 @@ import useTitle from "../../../hooks/useTitle";
 const UpdateToy = () => {
   useTitle('UpdateToy')
     const singleToy =useLoaderData()
+    const location =useLocation()
+    const navigate = useNavigate()
+    const from = location.state?.from?.pathname || "/myToys";
     const {_id,photoUrl,toyName,price,rating,quantity,sellerName,sellerEmail,category,description}=singleToy;
       const { register, handleSubmit, formState: { errors } } = useForm();
       
@@ -23,6 +26,7 @@ const UpdateToy = () => {
             .then((data) => {
             console.log(data);
                 if(data.modifiedCount>0){
+                  navigate(from, { replace: true })
                     Swal.fire({
               title: 'success!',
               text: 'Update Succesfull',
